@@ -36,3 +36,14 @@ jobs:
           --namespace ${{ secrets.NAMESPACE }} \
           --set namespace=${{ secrets.NAMESPACE }} \
           --create-namespace
+          
+    - name: View deployed resources
+      run: |
+        echo "🔍 Listing Helm releases"
+        helm list -n ${{ secrets.NAMESPACE }}
+
+        echo "📦 Deployed Kubernetes resources in namespace"
+        kubectl get all -n ${{ secrets.NAMESPACE }}
+
+        echo "📄 Logs from the nginx deployment"
+        kubectl logs -n ${{ secrets.NAMESPACE }} deployment/nginx-app || true
