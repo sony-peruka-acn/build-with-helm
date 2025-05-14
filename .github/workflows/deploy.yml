@@ -33,5 +33,6 @@ jobs:
     - name: Deploy using Helm
       run: |
         helm upgrade --install nginx-app ./helm-chart \
-          --namespace demo-helm-ns \
+          --namespace ${{ secrets.NAMESPACE }} \
+          --set namespace=${{ secrets.NAMESPACE }} \
           --create-namespace
