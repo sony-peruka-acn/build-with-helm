@@ -18,7 +18,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ew-west-1  # Replace if needed
+        aws-region: eu-west-1  # Replace if needed
 
     - name: Set up kubeconfig for EKS
       run: |
