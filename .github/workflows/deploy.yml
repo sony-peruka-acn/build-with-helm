@@ -33,17 +33,17 @@ jobs:
     - name: Deploy using Helm
       run: |
         helm upgrade --install nginx-app ./helm-chart \
-          --namespace ${{ secrets.NAMESPACE }} \
-          --set namespace=${{ secrets.NAMESPACE }} \
+          --namespace ${{ vars.NAMESPACE }} \
+          --set namespace=${{ vars.NAMESPACE }} \
           --create-namespace
           
     - name: View deployed resources
       run: |
         echo "🔍 Listing Helm releases"
-        helm list -n ${{ secrets.NAMESPACE }}
+        helm list -n ${{ vars.NAMESPACE }}
 
         echo "📦 Deployed Kubernetes resources in namespace"
-        kubectl get all -n ${{ secrets.NAMESPACE }}
+        kubectl get all -n ${{ vars.NAMESPACE }}
 
         echo "📄 Logs from the nginx deployment"
-        kubectl logs -n ${{ secrets.NAMESPACE }} deployment/nginx-app || true
+        kubectl logs -n ${{ vars.NAMESPACE }} deployment/nginx-app || true
