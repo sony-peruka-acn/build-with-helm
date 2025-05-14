@@ -18,11 +18,13 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-west-2  # Replace with your region
+        aws-region: us-west-2  # Replace if needed
 
     - name: Set up kubeconfig for EKS
       run: |
-        aws eks update-kubeconfig --name YOUR_CLUSTER_NAME --region us-west-2
+        aws eks update-kubeconfig \
+          --name ${{ secrets.EKS_CLUSTER_NAME }} \
+          --region us-west-2
 
     - name: Install Helm
       run: |
@@ -31,6 +33,5 @@ jobs:
     - name: Deploy using Helm
       run: |
         helm upgrade --install nginx-app ./helm-chart \
-          --namespace ${{ secrets.NAMESPACE }} \
-          --set namespace=${{ secrets.NAMESPACE }} \
+          --namespace demo-helm-ns \
           --create-namespace
