@@ -1,0 +1,36 @@
+name: Deploy NGINX to EKS using Helm
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2  # Replace with your region
+
+    - name: Set up kubeconfig for EKS
+      run: |
+        aws eks update-kubeconfig --name YOUR_CLUSTER_NAME --region us-west-2
+
+    - name: Install Helm
+      run: |
+        curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+
+    - name: Deploy using Helm
+      run: |
+        helm upgrade --install nginx-app ./helm-chart \
+          --namespace ${{ secrets.NAMESPACE }} \
+          --set namespace=${{ secrets.NAMESPACE }} \
+          --create-namespace
